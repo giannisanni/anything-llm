@@ -22,8 +22,8 @@ class OpenRouterLLM {
       apiKey: process.env.OPENROUTER_API_KEY,
       baseOptions: {
         headers: {
-          "HTTP-Referer": "https://useanything.com",
-          "X-Title": "AnythingLLM",
+          "HTTP-Referer": "https://giannisan.com",
+          "X-Title": "Gianni-personal-RAG",
         },
       },
     });
