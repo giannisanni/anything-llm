@@ -36,7 +36,7 @@ import { useNavigate } from "react-router-dom";
 
 const TITLE = "LLM Preference";
 const DESCRIPTION =
-  "AnythingLLM can work with many LLM providers. This will be the service which handles chatting.";
+  "This app can work with many LLM providers. This will be the service which handles chatting.";
 
 export default function LLMPreference({
   setHeader,
@@ -163,7 +163,7 @@ export default function LLMPreference({
       logo: AnythingLLMIcon,
       options: <NativeLLMOptions settings={settings} />,
       description:
-        "Use a downloaded custom Llama model for chatting on this AnythingLLM instance.",
+        "Use a downloaded custom Llama model for chatting on this instance.",
     },
   ];
 
