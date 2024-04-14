@@ -7,7 +7,7 @@ networks:
     driver: bridge
 
 services:
-  anything-llm:
+  gianni-llm:
     container_name: gianni-llm
     image: gianni-llm:latest
     build:

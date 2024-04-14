@@ -20,7 +20,7 @@ const HistoricalMessage = forwardRef(
             className={`text-[10px] font-medium text-gray-400 ml-[54px] mr-6 mb-2 text-left`}
           >
             {embedderSettings.settings.assistantName ||
-              "Anything LLM Chat Assistant"}
+              "Chat Assistant"}
           </div>
         )}
         <div

@@ -27,7 +27,7 @@ export default function DefaultChatContainer() {
     showModal: showNewWsModal,
     hideModal: hideNewWsModal,
   } = useNewWorkspaceModal();
-  const popMsg = !window.localStorage.getItem("anythingllm_intro");
+  const popMsg = !window.localStorage.getItem("giannillm_intro");
 
   useEffect(() => {
     const fetchData = async () => {
@@ -146,7 +146,7 @@ export default function DefaultChatContainer() {
 
   useEffect(() => {
     function processMsgs() {
-      if (!!window.localStorage.getItem("anythingllm_intro")) {
+      if (!!window.localStorage.getItem("giannillm_intro")) {
         setMockMessages([...MESSAGES]);
         return false;
       } else {
@@ -163,7 +163,7 @@ export default function DefaultChatContainer() {
         }, timer);
         timer += 2_500;
       });
-      window.localStorage.setItem("anythingllm_intro", 1);
+      window.localStorage.setItem("giannillm_intro", 1);
     }
 
     processMsgs();

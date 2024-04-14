@@ -46,8 +46,6 @@ export default function CodeSnippetModal({ embed, closeModal }) {
 function createScriptTagSnippet(embed, scriptHost, serverHost) {
   return `<!--
 Paste this script at the bottom of your HTML before the </body> tag.
-See more style and config options on our docs
-https://github.com/Mintplex-Labs/anything-llm/tree/master/embed/README.md
 -->
 <script
   data-embed-id="${embed.uuid}"
