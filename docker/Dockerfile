@@ -6,7 +6,7 @@ ARG ARG_UID=1000
 ARG ARG_GID=1000
 
 FROM base AS build-arm64
-RUN echo "Preparing build of AnythingLLM image for arm64 architecture"
+RUN echo "Preparing build of GianniLLM image for arm64 architecture"
 
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
@@ -30,20 +30,20 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update && \
         && rm yarn_1.22.19_all.deb
 
 # Create a group and user with specific UID and GID
-RUN groupadd -g "$ARG_GID" anythingllm && \
-    useradd -l -u "$ARG_UID" -m -d /app -s /bin/bash -g anythingllm anythingllm && \
-    mkdir -p /app/frontend/ /app/server/ /app/collector/ && chown -R anythingllm:anythingllm /app
+RUN groupadd -g "$ARG_GID" giannillm && \
+    useradd -l -u "$ARG_UID" -m -d /app -s /bin/bash -g giannillm giannillm && \
+    mkdir -p /app/frontend/ /app/server/ /app/collector/ && chown -R giannillm:giannillm /app
 
 # Copy docker helper scripts
 COPY ./docker/docker-entrypoint.sh /usr/local/bin/
 COPY ./docker/docker-healthcheck.sh /usr/local/bin/
-COPY --chown=anythingllm:anythingllm ./docker/.env.example /app/server/.env
+COPY --chown=giannillm:giannillm ./docker/.env.example /app/server/.env
 
 # Ensure the scripts are executable
 RUN chmod +x /usr/local/bin/docker-entrypoint.sh && \
     chmod +x /usr/local/bin/docker-healthcheck.sh
 
-USER anythingllm
+USER giannillm
 WORKDIR /app
 
 # Puppeteer does not ship with an ARM86 compatible build for Chromium
@@ -64,7 +64,7 @@ RUN echo "Done running arm64 specific installtion steps"
 
 # amd64-specific stage
 FROM base AS build-amd64
-RUN echo "Preparing build of AnythingLLM image for non-ARM architecture"
+RUN echo "Preparing build of gianniLLM image for non-ARM architecture"
 
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
@@ -88,14 +88,14 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update && \
         && rm yarn_1.22.19_all.deb
 
 # Create a group and user with specific UID and GID
-RUN groupadd -g "$ARG_GID" anythingllm && \
-    useradd -l -u "$ARG_UID" -m -d /app -s /bin/bash -g anythingllm anythingllm && \
-    mkdir -p /app/frontend/ /app/server/ /app/collector/ && chown -R anythingllm:anythingllm /app
+RUN groupadd -g "$ARG_GID" giannillm && \
+    useradd -l -u "$ARG_UID" -m -d /app -s /bin/bash -g giannillm giannillm && \
+    mkdir -p /app/frontend/ /app/server/ /app/collector/ && chown -R giannillm:giannillm /app
 
 # Copy docker helper scripts
 COPY ./docker/docker-entrypoint.sh /usr/local/bin/
 COPY ./docker/docker-healthcheck.sh /usr/local/bin/
-COPY --chown=anythingllm:anythingllm ./docker/.env.example /app/server/.env
+COPY --chown=giannillm:giannillm ./docker/.env.example /app/server/.env
 
 # Ensure the scripts are executable
 RUN chmod +x /usr/local/bin/docker-entrypoint.sh && \
@@ -107,9 +107,9 @@ RUN chmod +x /usr/local/bin/docker-entrypoint.sh && \
 
 # hadolint ignore=DL3006
 FROM build-${TARGETARCH} AS build
-RUN echo "Running common build flow of AnythingLLM image for all architectures"
+RUN echo "Running common build flow of gianniLLM image for all architectures"
 
-USER anythingllm
+USER giannillm
 WORKDIR /app
 
 # Install frontend dependencies
@@ -132,7 +132,7 @@ USER root
 WORKDIR /app/server
 RUN npx --no node-llama-cpp download
 WORKDIR /app
-USER anythingllm
+USER giannillm
 
 # Build the frontend
 FROM frontend-deps AS build-stage
@@ -143,17 +143,17 @@ WORKDIR /app
 
 # Setup the server
 FROM server-deps AS production-stage
-COPY --chown=anythingllm:anythingllm ./server/ ./server/
+COPY --chown=giannillm:giannillm ./server/ ./server/
 
 # Copy built static frontend files to the server public directory
-COPY --chown=anythingllm:anythingllm --from=build-stage /app/frontend/dist ./server/public
+COPY --chown=giannillm:giannillm --from=build-stage /app/frontend/dist ./server/public
 
 # Copy the collector
-COPY --chown=anythingllm:anythingllm ./collector/ ./collector/
+COPY --chown=giannillm:giannillm ./collector/ ./collector/
 
 # Install collector dependencies
 WORKDIR /app/collector
-ENV PUPPETEER_DOWNLOAD_BASE_URL=https://storage.googleapis.com/chrome-for-testing-public 
+ENV PUPPETEER_DOWNLOAD_BASE_URL=https://storage.googleapis.com/chrome-for-testing-public
 RUN yarn install --production --network-timeout 100000 && yarn cache clean
 
 # Migrate and Run Prisma against known schema
@@ -164,7 +164,7 @@ WORKDIR /app
 
 # Setup the environment
 ENV NODE_ENV=production
-ENV ANYTHING_LLM_RUNTIME=docker
+ENV GIANNI_LLM_RUNTIME=docker
 
 # Expose the server port
 EXPOSE 3001

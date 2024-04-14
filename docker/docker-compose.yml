@@ -1,15 +1,15 @@
 version: "3.9"
 
-name: anythingllm
+name: giannillm
 
 networks:
-  anything-llm:
+  gianni-llm:
     driver: bridge
 
 services:
   anything-llm:
-    container_name: anything-llm
-    image: anything-llm:latest
+    container_name: gianni-llm
+    image: gianni-llm:latest
     build:
       context: ../.
       dockerfile: ./docker/Dockerfile
@@ -29,6 +29,6 @@ services:
     env_file:
       - .env
     networks:
-      - anything-llm
+      - gianni-llm
     extra_hosts:
       - "host.docker.internal:host-gateway"
